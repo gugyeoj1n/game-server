@@ -3,7 +3,7 @@ import sys
 
 try :
     server_sock = socket(AF_INET, SOCK_STREAM)
-    server_sock.bind(('', 5000))
+    server_sock.bind(('172.30.1.17', 5000))
     server_sock.listen(5)
 
     print('! SOCKET GENERATED !')
