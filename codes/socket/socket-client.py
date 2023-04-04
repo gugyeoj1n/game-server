@@ -11,7 +11,7 @@ def recv_data(client) :
     while True :
         data = client.recv(1024)
         print("MESSAGE ARRIVED !")
-        print(">> ", data.decode())
+        print(">> ", data.decode('utf-8'))
 
 start_new_thread(recv_data, (client, ))
 print("CONNECTED TO SERVER !")

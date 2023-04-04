@@ -14,7 +14,7 @@ def threaded(client, addr) :
                 break
         
             print("MESSAGE FROM CLIENT [", addr[0], ":", addr[1], "]")
-            print(">> ", data.decode())
+            print(">> ", data.decode('utf-8'))
 
             # 접속된 클라이언트들에게 재전송
             for cl in clients :
