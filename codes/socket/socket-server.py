@@ -1,27 +1,56 @@
 from socket import *
-import sys
+from _thread import *
 
-try :
-    server_sock = socket(AF_INET, SOCK_STREAM)
-    server_sock.bind(('172.30.1.17', 5000))
-    server_sock.listen(5)
+# ------------------------------------------------------------
+# 클라이언트 연결 시 생성되는 스레드에서 실행
+def threaded(client, addr) :
+    print("CLIENT CONNECTED -> ", addr[0], ":", addr[1])
 
-    print('! SOCKET GENERATED !')
-except:
-    print('FAILED TO CONNECT TO AF_INET (IPv4)')
-    sys.exit()
+    while True:
+        try:
+            data = client.recv(1024)
+            if not data :
+                print("CLIENT DISCONNECTED -> ", addr[0], ":", addr[1])
+                break
+        
+            print("MESSAGE FROM CLIENT [", addr[0], ":", addr[1], "]")
+            print(">> ", data.decode())
 
-connect_sock, addr = server_sock.accept()
+            # 접속된 클라이언트들에게 재전송
+            for cl in clients :
+                if cl != client :
+                    cl.send(data)
+        except ConnectionResetError as e :
+            print("CLIENT DISCONNECTED -> ", addr[0], ":", addr[1])
+            break
+    
+    if client in clients :
+        clients.remove(client)
+    
+    client.close()
 
-print('SERVER SEND THE TEST MESSAGE.')
-test_msg = 'THIS IS TEST MESSAGE FROM SERVER SOCKET.'
-connect_sock.send(test_msg.encode('utf-8'))
+# ------------------------------------------------------------
 
-print('\nNOW YOU CAN CHAT WITH CLIENT !\n--------------------------------\n')
+clients = []
 
+# 주소는 보안을 위해 나중에 모듈로 빼기 !!
+HOST = '192.168.0.103'
+PORT = 5000
 
-while True :
-    req = connect_sock.recv(1024)
-    print(req.decode('utf-8'))
-    msg = input('YOUR RESPONSE : ')
-    connect_sock.send(msg.encode('utf-8'))
+# ------------------------------------------------------------
+# 서버 소켓 생성
+with socket(AF_INET, SOCK_STREAM) as server :
+    server.bind((HOST, PORT))
+    server.listen()
+    print("! SOCKET GENERATED !")
+
+    try :
+        while True :
+            client, addr = server.accept()
+            clients.append(client)
+            start_new_thread(threaded, (client, addr))
+    except Exception as e:
+        print("ERROR : ", e)
+    finally :
+        server.close()
+# ------------------------------------------------------------
