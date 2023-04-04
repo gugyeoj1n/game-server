@@ -3,4 +3,4 @@ project(game_server)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(game_server main.cpp codes/multi_thread.cpp)
+add_executable(game_server main.cpp)
