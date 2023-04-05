@@ -5,6 +5,11 @@ from _thread import *
 # 클라이언트 연결 시 생성되는 스레드에서 실행
 def threaded(client, addr) :
     print("CLIENT CONNECTED -> ", addr[0], ":", addr[1])
+    
+    # 이름 받기
+    client.send("WHAT'S YOUR NAME ? >> ".encode('utf-8'))
+    name = client.recv(1024).decode('utf-8')
+    client.send("NOW YOU CAN CHAT !!".encode('utf-8'))
 
     while True:
         try:
@@ -13,12 +18,13 @@ def threaded(client, addr) :
                 print("CLIENT DISCONNECTED -> ", addr[0], ":", addr[1])
                 break
         
-            print("MESSAGE FROM CLIENT [", addr[0], ":", addr[1], "]")
+            print("MESSAGE FROM [", name, "]")
             print(">> ", data.decode('utf-8'))
 
             # 접속된 클라이언트들에게 재전송
             for cl in clients :
                 if cl != client :
+                    cl.send(f"[ {name} ] >> ".encode('utf-8'))
                     cl.send(data)
         except ConnectionResetError as e :
             print("CLIENT DISCONNECTED -> ", addr[0], ":", addr[1])
@@ -33,9 +39,9 @@ def threaded(client, addr) :
 
 clients = []
 
-# 주소는 보안을 위해 나중에 모듈로 빼기 !!
-HOST = '192.168.0.103'
-PORT = 5000
+# 현재 IP 주소 가져오기
+HOST = gethostbyname(gethostname())
+PORT = 9939
 
 # ------------------------------------------------------------
 # 서버 소켓 생성
