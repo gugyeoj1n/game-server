@@ -28,6 +28,8 @@ int main() {
 			break;
 	}
 
+	cout << "CONNECTED !" << endl;
+
 	thread proc_c(proc_recv);
 	char buffer[PACKET_SIZE] = { 0 };
 
@@ -52,10 +54,6 @@ void proc_recv() {
 	while (!WSAGetLastError()) {
 		ZeroMemory(&data, PACKET_SIZE);
 		recv(sock, data, PACKET_SIZE, 0);
-		cmd = data;
-
-		if (cmd == "exit")
-			break;
 
 		cout << "FROM SERVER : " << data << endl;
 	}

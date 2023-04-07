@@ -1,4 +1,5 @@
 ﻿#pragma comment(lib, "ws2_32.lib")
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #include <iostream>
 #include <winsock2.h>
@@ -30,8 +31,8 @@ int main() {
 	ZeroMemory(&client, client_size);
 	client_sock = accept(sock, (SOCKADDR*)&client, &client_size);
 
-	char buffer[PACKET_SIZE] = { 0 };
 	thread proc_s(proc_recvs);
+	char buffer[PACKET_SIZE] = { 0 };
 
 	while (!WSAGetLastError()) {
 		cin >> buffer;
@@ -52,7 +53,7 @@ void proc_recvs() {
 
 	while (!WSAGetLastError()) {
 		ZeroMemory(&data, PACKET_SIZE);
-		recv(sock, data, PACKET_SIZE, 0);
+		recv(client_sock, data, PACKET_SIZE, 0);
 
 		cout << "FROM CLIENT : " << data << endl;
 	}
