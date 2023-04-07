@@ -1,0 +1,14 @@
+﻿  tcp-server.cpp
+tcp-server.obj : error LNK2019: __imp__accept@12_main 함수에서 참조되는 확인할 수 없는 외부 기호
+tcp-server.obj : error LNK2019: __imp__bind@12_main 함수에서 참조되는 확인할 수 없는 외부 기호
+tcp-server.obj : error LNK2019: __imp__closesocket@4_main 함수에서 참조되는 확인할 수 없는 외부 기호
+tcp-server.obj : error LNK2019: __imp__htonl@4_main 함수에서 참조되는 확인할 수 없는 외부 기호
+tcp-server.obj : error LNK2019: __imp__htons@4_main 함수에서 참조되는 확인할 수 없는 외부 기호
+tcp-server.obj : error LNK2019: __imp__listen@8_main 함수에서 참조되는 확인할 수 없는 외부 기호
+tcp-server.obj : error LNK2019: __imp__recv@16"void __cdecl proc_recvs(void)" (?proc_recvs@@YAXXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+tcp-server.obj : error LNK2019: __imp__send@16_main 함수에서 참조되는 확인할 수 없는 외부 기호
+tcp-server.obj : error LNK2019: __imp__socket@12_main 함수에서 참조되는 확인할 수 없는 외부 기호
+tcp-server.obj : error LNK2019: __imp__WSAStartup@8_main 함수에서 참조되는 확인할 수 없는 외부 기호
+tcp-server.obj : error LNK2019: __imp__WSACleanup@0_main 함수에서 참조되는 확인할 수 없는 외부 기호
+tcp-server.obj : error LNK2019: __imp__WSAGetLastError@0"void __cdecl proc_recvs(void)" (?proc_recvs@@YAXXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+C:\Users\cwj27\Desktop\game-server\codes\socket-cpp\Debug\tcp-server.exe : fatal error LNK1120: 12개의 확인할 수 없는 외부 참조입니다.
