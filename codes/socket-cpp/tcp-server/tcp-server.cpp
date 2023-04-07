@@ -4,15 +4,21 @@
 #include <iostream>
 #include <winsock2.h>
 #include <thread>
+#include <vector>
 #define PACKET_SIZE 1024
+#define MAX_USER 10
+
 using namespace std;
 
-SOCKET sock, client_sock;
+WSADATA wsa;
+SOCKET sock, client_sock[MAX_USER];
+SOCKADDR_IN client[MAX_USER] = { 0 };
+int client_size[MAX_USER];
 
-void proc_recvs();
+void client_accept();
+void recv_client(SOCKET& s, int client_num);
 
 int main() {
-	WSADATA wsa;
 	WSAStartup(MAKEWORD(2, 2), &wsa);
 	// ----------------------------------------------------
 
@@ -26,35 +32,39 @@ int main() {
 	bind(sock, (SOCKADDR*)&addr, sizeof(addr));
 	listen(sock, SOMAXCONN);
 
-	SOCKADDR_IN client = {};
-	int client_size = sizeof(client);
-	ZeroMemory(&client, client_size);
-	client_sock = accept(sock, (SOCKADDR*)&client, &client_size);
+	thread(client_accept).detach();
 
-	thread proc_s(proc_recvs);
-	char buffer[PACKET_SIZE] = { 0 };
+	while (1) {
 
-	while (!WSAGetLastError()) {
-		cin >> buffer;
-		send(client_sock, buffer, strlen(buffer), 0);
 	}
 
-	proc_s.join();
-
-	closesocket(client_sock);
+	for (int i = 0; i < MAX_USER; i++)
+		closesocket(client_sock[i]);
 	closesocket(sock);
 
 	// ----------------------------------------------------
 	WSACleanup();
 }
 
-void proc_recvs() {
-	char data[PACKET_SIZE] = {};
+void client_accept() {
+	char client_num[MAX_USER];
+	for (int i = 0; i < MAX_USER; i++) {
+		client_size[i] = sizeof(client[i]);
+		client_sock[i] = accept(sock, (SOCKADDR*)&client[i], &client_size[i]);
 
-	while (!WSAGetLastError()) {
-		ZeroMemory(&data, PACKET_SIZE);
-		recv(client_sock, data, PACKET_SIZE, 0);
+		if (client_sock[i] == INVALID_SOCKET) {
+			cout << "ERROR : INVALID SOCKET" << endl;
+			closesocket(client_sock[i]);
+			closesocket(sock);
+			WSACleanup();
+			return;
+		}
 
-		cout << "FROM CLIENT : " << data << endl;
+		cout << "CLIENT #" << i << " JOINED TO SERVER !" << endl;
+
+		ZeroMemory(client_num, sizeof(client_num));
+		itoa(i, client_num, 10);
+		send(client_sock[i], client_num, strlen(client_num), 0);
+		thread(recv_client, ref(client_sock[i]), i).detach();
 	}
 }

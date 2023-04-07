@@ -3,13 +3,10 @@
 
 #include <iostream>
 #include <WinSock2.h>
-#include <thread>
 #define PACKET_SIZE 1024
 using namespace std;
 
 SOCKET sock;
-
-void proc_recv();
 
 int main() {
 	WSADATA wsa;
@@ -28,33 +25,20 @@ int main() {
 			break;
 	}
 
-	cout << "CONNECTED !" << endl;
+	// FIRST RECV, RENAME CONSOLE TITLE
+	char buf[PACKET_SIZE];
+	TCHAR new_title[PACKET_SIZE];
+	recv(sock, buf, PACKET_SIZE, 0);
+	sprintf(buf, "[%d] %s:%d", atoi(buf), inet_ntoa(addr.sin_addr), htons(addr.sin_port));
+	MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, buf, strlen(buf), new_title, 256);
+	SetConsoleTitle(new_title);
 
-	thread proc_c(proc_recv);
-	char buffer[PACKET_SIZE] = { 0 };
-
-	// MESSAGE SEND
 	while (!WSAGetLastError()) {
-		cin >> buffer;
-		send(sock, buffer, strlen(buffer), 0);
-	}
 
-	proc_c.join();
+	}
 
 	closesocket(sock);
 
 	// ----------------------------------------------------
 	WSACleanup();
-}
-
-void proc_recv() {
-	char data[PACKET_SIZE] = {};
-	string cmd;
-
-	while (!WSAGetLastError()) {
-		ZeroMemory(&data, PACKET_SIZE);
-		recv(sock, data, PACKET_SIZE, 0);
-
-		cout << "FROM SERVER : " << data << endl;
-	}
 }
