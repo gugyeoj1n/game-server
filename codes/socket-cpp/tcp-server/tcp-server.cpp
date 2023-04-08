@@ -49,13 +49,13 @@ int main() {
 	char msg[PACKET_SIZE], send_num[PACKET_SIZE];
 	while (1) {
 		cout << "INPUT SERVER MESSAGE >> ";
-		cin >> msg;
+		cin.getline(msg, PACKET_SIZE, '\n');
 
 		if (!strcmp(msg, "exit"))
 			break;
 
-		cout << "TARGET CLIENT (all : send to everyone) >> ";
-		cin >> send_num;
+		cout << "\nTARGET CLIENT (all : send to everyone) >> ";
+		cin.getline(send_num, PACKET_SIZE, '\n');
 
 		if (!strcmp(send_num, "all")) {
 			for (int i = 0; i < MAX_USER; i++)
@@ -102,12 +102,14 @@ void client_accept() {
 void recv_client(SOCKET& s, int client_num) {
 	char buf[PACKET_SIZE];
 
-	while (1) {
+	while (!WSAGetLastError()) {
 		ZeroMemory(buf, PACKET_SIZE);
 		recv(s, buf, PACKET_SIZE, 0);
 
 		cout << "\nCLIENT[" << client_num << "] >> " << buf << endl;
 	}
+
+	cout << "\nCLIENT #" << client_num << " DISCONNECTED !" << endl;
 
 	return;
 }

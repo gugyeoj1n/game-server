@@ -41,7 +41,7 @@ int main() {
 
 	while (!WSAGetLastError()) {
 		cout << "INPUT YOUR MESSAGE >> ";
-		cin >> buf;
+		cin.getline(buf, PACKET_SIZE, '\n');
 
 		send(sock, buf, strlen(buf), 0);
 	}
