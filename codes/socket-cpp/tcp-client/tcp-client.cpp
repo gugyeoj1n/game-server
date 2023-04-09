@@ -40,7 +40,7 @@ int main() {
 	thread(recv_data, ref(sock)).detach();
 
 	while (!WSAGetLastError()) {
-		cout << "INPUT YOUR MESSAGE >> ";
+		cout << "  INPUT YOUR MESSAGE >> ";
 		cin.getline(buf, PACKET_SIZE, '\n');
 
 		send(sock, buf, strlen(buf), 0);
@@ -61,6 +61,6 @@ void recv_data(SOCKET& s) {
 
 		if (WSAGetLastError()) break;
 
-		cout << "\n[ Server ] >> " << buf << endl;
+		cout << "\n  [ Server ] >> " << buf << "\n  INPUT YOUR MESSAGE >> ";
 	}
 }

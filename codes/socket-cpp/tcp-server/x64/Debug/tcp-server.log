@@ -2,5 +2,4 @@
 C:\Users\구겨징\Desktop\game-server\codes\socket-cpp\tcp-server\tcp-server.cpp(62,45): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\구겨징\Desktop\game-server\codes\socket-cpp\tcp-server\tcp-server.cpp(65,57): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\구겨징\Desktop\game-server\codes\socket-cpp\tcp-server\tcp-server.cpp(97,57): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\구겨징\Desktop\game-server\codes\socket-cpp\tcp-server\tcp-server.cpp(114,44): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   tcp-server.vcxproj -> C:\Users\구겨징\Desktop\game-server\codes\socket-cpp\x64\Debug\tcp-server.exe

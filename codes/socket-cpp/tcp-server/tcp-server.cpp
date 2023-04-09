@@ -13,7 +13,7 @@ using namespace std;
 WSADATA wsa;
 SOCKET sock, *client_sock;
 SOCKADDR_IN *client;
-int *client_size, MAX_USER;
+int *client_size, MAX_USER, CNT_USER;
 
 void client_accept();
 void recv_client(SOCKET& s, int client_num);
@@ -28,6 +28,7 @@ int main() {
 	client_sock = new SOCKET[MAX_USER];
 	client = new SOCKADDR_IN[MAX_USER];
 	client_size = new int[MAX_USER];
+	CNT_USER = 0;
 
 	WSAStartup(MAKEWORD(2, 2), &wsa);
 	// ----------------------------------------------------
@@ -44,17 +45,27 @@ int main() {
 
 	thread(client_accept).detach();
 
+	cout << "\n\n---------------------------------\n" 
+		<< "  SERVER OPEN !\n"
+		<< "  MESSAGE COMMAND : |  exit  |  mem  |\n" 
+		<< "  TARGET COMMAND : |  all  |\n" 
+		<< "-------------------------------- - \n\n";
+
 
 	// SERVER CAN SEND MESSAGE TO CLIENT
 	char msg[PACKET_SIZE], send_num[PACKET_SIZE];
 	while (1) {
-		cout << "INPUT SERVER MESSAGE >> ";
+		cout << "\n  INPUT SERVER MESSAGE >> ";
 		cin.getline(msg, PACKET_SIZE, '\n');
 
 		if (!strcmp(msg, "exit"))
 			break;
+		else if (!strcmp(msg, "mem")) {
+			cout << "  MEMBER COUNT >> " << CNT_USER << " / " << MAX_USER << endl;
+			continue; 
+		}
 
-		cout << "\nTARGET CLIENT (all : send to everyone) >> ";
+		cout << "\n  TARGET CLIENT >> ";
 		cin.getline(send_num, PACKET_SIZE, '\n');
 
 		if (!strcmp(send_num, "all")) {
@@ -83,15 +94,15 @@ void client_accept() {
 		client_sock[i] = accept(sock, (SOCKADDR*)&client[i], &client_size[i]);
 
 		if (client_sock[i] == INVALID_SOCKET) {
-			cout << "ERROR : INVALID SOCKET" << endl;
+			cout << "  ERROR : INVALID SOCKET" << endl;
 			closesocket(client_sock[i]);
 			closesocket(sock);
 			WSACleanup();
 			return;
 		}
 
-		cout << "\nCLIENT #" << i << " JOINED TO SERVER !" << endl;
-
+		cout << "\n  CLIENT #" << i << " JOINED TO SERVER !\n" << "  INPUT SERVER MESSAGE >> ";
+		CNT_USER++;
 		ZeroMemory(client_num, sizeof(client_num));
 		_itoa(i, client_num, 10);
 		send(client_sock[i], client_num, strlen(client_num), 0);
@@ -106,10 +117,10 @@ void recv_client(SOCKET& s, int client_num) {
 		ZeroMemory(buf, PACKET_SIZE);
 		recv(s, buf, PACKET_SIZE, 0);
 
-		cout << "\nCLIENT[" << client_num << "] >> " << buf << endl;
+		cout << "\n  CLIENT[" << client_num << "] >> " << buf << "\n  INPUT SERVER MESSAGE >> ";
 	}
 
-	cout << "\nCLIENT #" << client_num << " DISCONNECTED !" << endl;
-
+	cout << "\n  CLIENT #" << client_num << " DISCONNECTED !" << "\n  INPUT SERVER MESSAGE >> ";
+	CNT_USER--;
 	return;
 }
