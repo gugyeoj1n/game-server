@@ -19,9 +19,13 @@ int main() {
 
 	sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 
+	int PORT;
+	cout << "SERVER PORT >> ";
+	cin >> PORT;
+
 	SOCKADDR_IN addr = {};
 	addr.sin_family = AF_INET;
-	addr.sin_port = htons(5000);
+	addr.sin_port = htons(PORT);
 	addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
 	while (1) {
