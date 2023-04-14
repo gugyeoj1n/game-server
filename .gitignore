@@ -1,4 +1,4 @@
 # Project exclude paths
 /cmake-build-debug/
-/codes/unity-photon/server-study/Assets/Photon/
+/codes/unity-photon/server-study/.vs
 main.cpp
