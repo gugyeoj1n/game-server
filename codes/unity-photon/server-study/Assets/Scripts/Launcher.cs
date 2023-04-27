@@ -29,11 +29,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
     }
 
-    void Start()
-    {
-        Connect();
-    }
-
     #endregion
     // -----------------------------------------
 

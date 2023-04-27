@@ -376,6 +376,7 @@
 "Assets/Photon/PhotonLibs/WebSocket/WebSocket.cs"
 "Assets/Photon/PhotonRealtime/Demos/DemoLoadBalancing/ConnectAndJoinRandomLb.cs"
 "Assets/Scripts/Launcher.cs"
+"Assets/Scripts/PlayerNameInputField.cs"
 -langversion:9.0
 
 /deterministic
