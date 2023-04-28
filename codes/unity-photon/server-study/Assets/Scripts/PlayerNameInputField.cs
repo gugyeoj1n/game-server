@@ -8,12 +8,15 @@ using Photon.Realtime;
 [RequireComponent(typeof(InputField))]
 public class PlayerNameInputField : MonoBehaviour
 {
+    // -----------------------------------------
     #region Private Constants
 
     const string playerNamePrefKey = "PlayerName";
 
     #endregion
+    // -----------------------------------------
 
+    // -----------------------------------------
     #region MonoBehaviour Callbacks
 
     void Start()
@@ -34,7 +37,9 @@ public class PlayerNameInputField : MonoBehaviour
     }
 
     #endregion
+    // -----------------------------------------
 
+    // -----------------------------------------
     #region Public Methods
 
     public void SetPlayerName(string value)
@@ -49,4 +54,5 @@ public class PlayerNameInputField : MonoBehaviour
     }
 
     #endregion
+    // -----------------------------------------
 }
