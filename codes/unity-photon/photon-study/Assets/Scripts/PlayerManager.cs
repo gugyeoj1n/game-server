@@ -33,6 +33,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 
     public static GameObject LocalPlayerInstance;
 
+    [SerializeField]
+    private GameObject playerUIPrefab;
+
     #endregion
     // -----------------------------------------
 
@@ -90,6 +93,12 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         };
 
 #endif
+        if(playerUIPrefab != null) {
+            GameObject _ui = Instantiate(playerUIPrefab);
+            _ui.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+        } else {
+            Debug.LogWarning("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.", this);
+        }
     }
 
     void Update()
@@ -153,6 +162,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             transform.position = new Vector3(0f, 5f, 0f);
         }
+        GameObject _ui = Instantiate(playerUIPrefab);
+        _ui.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
     }
 
     #endregion
