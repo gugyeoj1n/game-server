@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class PlayerAnimationManager : MonoBehaviour
+public class PlayerAnimationManager : MonoBehaviourPun
 {
     // -----------------------------------------
     #region Private Fields
@@ -29,6 +30,11 @@ public class PlayerAnimationManager : MonoBehaviour
 
     void Update()
     {
+        if(photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+        {
+            return;
+        }
+
         if(!anim)
         {
             return;

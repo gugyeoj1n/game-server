@@ -4,13 +4,34 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Photon.Pun;
 
-public class PlayerManager : MonoBehaviourPunCallbacks
+public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 {
+    // -----------------------------------------
+    #region IPunObservable implementation
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(stream.IsWriting)
+        {
+            stream.SendNext(isFiring);
+            stream.SendNext(Health);
+        } else
+        {
+            this.isFiring = (bool)stream.ReceiveNext();
+            this.Health = (float)stream.ReceiveNext();
+        }
+    }
+
+    #endregion
+    // -----------------------------------------
+
     // -----------------------------------------
     #region Public Fields
 
     [Tooltip("The current Health of our player")]
     public float Health = 1f;
+
+    public static GameObject LocalPlayerInstance;
 
     #endregion
     // -----------------------------------------
@@ -39,16 +60,50 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             beams.SetActive(false);
         }
 
+        if(photonView.IsMine)
+        {
+            PlayerManager.LocalPlayerInstance = this.gameObject;
+        }
 
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    void Start()
+    {
+        CameraWork _cameraWork = this.gameObject.GetComponent<CameraWork>();
+        if(_cameraWork != null)
+        {
+            if(photonView.IsMine)
+            {
+                _cameraWork.OnStartFollowing();
+            }
+        } else
+        {
+            Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component on playerPrefab.", this);
+        }
+
+#if UNITY_5_4_OR_NEWER
+
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
+        {
+         this.CalledOnLevelWasLoaded(scene.buildIndex);
+        };
+
+#endif
     }
 
     void Update()
-    {
-        ProcessInputs();
-        if(beams != null && isFiring != beams.activeInHierarchy)
+    {   
+        if(photonView.IsMine)
+        {
+            ProcessInputs();
+        }
+
+        if (beams != null && isFiring != beams.activeInHierarchy)
         {
             beams.SetActive(isFiring);
         }
+        
         if(Health <= 0f) 
         {
             GameManager.Instance.LeaveRoom();
@@ -83,6 +138,21 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         }
 
         Health -= 0.1f * Time.deltaTime;
+    }
+
+#if !UNITY_5_4_OR_NEWER
+    void OnLevelWasLoaded(int level)
+    {
+        this.CalledOnLevelWasLoaded(level);
+    }
+#endif
+
+    void CalledOnLevelWasLoaded(int level)
+    {
+        if (!Physics.Raycast(transform.position, -Vector3.up, 5f))
+        {
+            transform.position = new Vector3(0f, 5f, 0f);
+        }
     }
 
     #endregion
