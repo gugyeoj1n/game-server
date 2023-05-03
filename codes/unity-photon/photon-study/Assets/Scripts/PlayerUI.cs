@@ -49,6 +49,16 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+    void LateUpdate()
+    {
+        if (targetTransform != null)
+        {
+            targetPosition = targetTransform.position;
+            targetPosition.y += charControllerHeight;
+            this.transform.position = Camera.main.WorldToScreenPoint(targetPosition) + screenOffset;
+        }
+    }
+
     #endregion
     // -----------------------------------------
 
@@ -61,21 +71,15 @@ public class PlayerUI : MonoBehaviour
             return;
         }
         target = _target;
-        CharacterController _charController = _target.GetComponent<CharacterController>();
+        targetPosition = target.transform.position;
+        targetTransform = target.transform;
+        CharacterController _charController = target.GetComponent<CharacterController>();
         if(_charController != null) {
             charControllerHeight = _charController.height;
         }
 
         if(playerNameText != null) {
             playerNameText.text = target.photonView.Owner.NickName;
-        }
-    }
-
-    void LateUpdate() {
-        if(targetTransform != null) {
-            targetPosition = targetTransform.position;
-            targetPosition.y += charControllerHeight;
-            this.transform.position = Camera.main.WorldToScreenPoint(targetPosition) + screenOffset;
         }
     }
 
