@@ -1,0 +1,10 @@
+C:\Users\구겨징\Desktop\game-server\mongodb-driver\MongoDBUnity\bin\Debug\netstandard2.0\MongoDBUnity.deps.json
+C:\Users\구겨징\Desktop\game-server\mongodb-driver\MongoDBUnity\bin\Debug\netstandard2.0\MongoDBUnity.dll
+C:\Users\구겨징\Desktop\game-server\mongodb-driver\MongoDBUnity\bin\Debug\netstandard2.0\MongoDBUnity.pdb
+C:\Users\구겨징\Desktop\game-server\mongodb-driver\MongoDBUnity\obj\Debug\netstandard2.0\MongoDBUnity.csproj.AssemblyReference.cache
+C:\Users\구겨징\Desktop\game-server\mongodb-driver\MongoDBUnity\obj\Debug\netstandard2.0\MongoDBUnity.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\구겨징\Desktop\game-server\mongodb-driver\MongoDBUnity\obj\Debug\netstandard2.0\MongoDBUnity.AssemblyInfoInputs.cache
+C:\Users\구겨징\Desktop\game-server\mongodb-driver\MongoDBUnity\obj\Debug\netstandard2.0\MongoDBUnity.AssemblyInfo.cs
+C:\Users\구겨징\Desktop\game-server\mongodb-driver\MongoDBUnity\obj\Debug\netstandard2.0\MongoDBUnity.csproj.CoreCompileInputs.cache
+C:\Users\구겨징\Desktop\game-server\mongodb-driver\MongoDBUnity\obj\Debug\netstandard2.0\MongoDBUnity.dll
+C:\Users\구겨징\Desktop\game-server\mongodb-driver\MongoDBUnity\obj\Debug\netstandard2.0\MongoDBUnity.pdb
