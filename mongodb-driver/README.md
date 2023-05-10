@@ -4,8 +4,8 @@
 > bin/Debug/netstandard2.0/publish 안에 있는 모든 dll 파일을 옮기면 완료
 * * *
 ## 드라이버 생성 (Windows 터미널)
-> >> dotnet new classlib --framework "netstandard2.0" -o MongoDBUnity
-> >> cd MongoDBUnity
-> >> dotnet add package MongoDB.Driver
-> >> dotnet publish
+> dotnet new classlib --framework "netstandard2.0" -o MongoDBUnity
+> > cd MongoDBUnity
+> > dotnet add package MongoDB.Driver
+> > dotnet publish
 * * *
